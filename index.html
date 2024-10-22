@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css" >
+        <title>Calculator</title>
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div class="inner-wrapper">
+         <h2>Calculator</h2>
+         <form action="">
+                <input type="int" id="calc_input" value="" >
+                
+                </form>
+                <h3 class="output">Result</h3>
+            </div>
+        </div>
+
+        <div class="wrap">
+            <div class="number-wrap">
+                <button id="btn1" value="1">1</button>
+                <button id="btn2" value="2">2</button>
+                <button id="btn3" value="3">3</button>
+                <button id="btn4" value="4">4</button>
+                <button id="btn5" value="5">5</button>
+                <button id="btn6" value="6">6</button>
+                <button id="btn7" value="7">7</button>
+                <button id="btn8" value="8">8</button>
+                <button id="btn9" value="9">9</button>
+                <button id="btn0" value="0">0</button>
+
+                <!-- Operator buttons -->
+                <button id="addBtn" value="+">+</button>
+                <button id="subBtn" value="-">-</button>
+                <button id="mulBtn" value="*">*</button>
+                <button id="divBtn" value="/">/</button> 
+                <button id="sqrBtn" value="Sqrt;">&Sqrt;</button>  
+                <button type="button" id="myBtn">=</button>
+
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+// Global variables for the calculator state
+let currentValue = '';
+let previousValue = '';
+let operator = '';
+
+// Get the input element where the calculation will be displayed
+const inputElement = document.getElementById("calc_input");
+
+// Function to update the display of the input element
+function updateDisplay(value) {
+    inputElement.value = value; // Update the value property of the input element
+}
+
+// Function to handle when a number button is clicked
+function numberClicked(number) {
+    currentValue += number; // Append the clicked number to the current value
+    updateDisplay(currentValue); // Display the updated value
+}
+
+// Function to handle when an operator button (+, -, *, /) is clicked
+function operation(op) {
+//    if( typeof currentValue !== 'number') return;  
+//    if( typeof previousValue !== 'number') return;
+   
+     calculate(); // If there's a previous value, perform the calculation first
+     operator = op;
+     previousValue = currentValue; // Move the current value to the previous value
+    currentValue = ''; // Reset the current value for the next number input
+}
+
+// Function to perform the calculation based on the selected operator
+function calculate() {
+    const num1 = parseFloat(previousValue); // Convert previous value to a number
+    const num2 = parseFloat(currentValue); // Convert current value to a number
+    let result = '';
+
+    // Perform the calculation based on the operator
+    switch (operator) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case '*':
+            result = num1 * num2;
+            break;
+            case 'Sqrt':
+            result = Math.sqrt(num1);
+            break;
+        case '/':
+            result = num2 !== 0 ? num1 / num2 : 'Error'; // Check for division by zero
+            break;
+        default:
+            return;
+    }
+
+    updateDisplay(result); // Display the result of the calculation
+    document.querySelector(".output").innerHTML = result;
+    inputElement='';
+    previousValue = result; // Store the result for possible further calculations
+    currentValue = ''; // Reset the current value for the next calculation
+    operator = ''; // Clear the operator
+}
+
+// Event listeners for number buttons
+for (let i = 0; i <= 9; i++) {
+    document.getElementById(`btn${i}`).addEventListener("click", () => numberClicked(i.toString()));
+}
+
+// Event listeners for operator buttons
+document.getElementById("addBtn").addEventListener("click", () => operation('+'));
+document.getElementById("subBtn").addEventListener("click", () => operation('-'));
+document.getElementById("mulBtn").addEventListener("click", () => operation('*'));
+document.getElementById("divBtn").addEventListener("click", () => operation('/'));
+document.getElementById("sqrBtn").addEventListener("click", () => operation('/'));
+
+// Event listener for the equals button
+document.getElementById("myBtn").addEventListener("click", calculate);
+
+
+</script>
+    
